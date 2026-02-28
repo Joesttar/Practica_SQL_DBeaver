@@ -1,2 +1,0 @@
-create database Ejemplo2;
-
