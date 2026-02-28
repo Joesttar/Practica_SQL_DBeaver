@@ -1,0 +1,7 @@
+*.exe
+*.dat
+*.log
+*.ini
+*.tmp
+ntuser.*
+POSTGRESQL_*
