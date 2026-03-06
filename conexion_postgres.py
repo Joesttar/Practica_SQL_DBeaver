@@ -1,6 +1,8 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
 import unicodedata
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # 1. Conexión (Asegúrate de que la clave 'postgres1' sea la correcta)
 engine = create_engine('postgresql://postgres:postgres1@localhost:5432/entrenamiento_database')
@@ -67,3 +69,14 @@ df_usuario['rol'] = df_usuario['rol'].str.strip().str.lower()  # Normalizamos el
 print("Limpieza de datos completada exitosamente.")
 print("\nCategorias unicas detectadas:", df_productos['categoria'].unique())
 print(df_productos.head)
+
+#------------------------------------------------------------------------------------------------------------------------------------------
+# Analisis y visualizacion de datos
+
+# Estilo de las graficas
+sns.set_theme(style="whitegrid")
+plt.rcParams['figure.figsize'] = (10, 6)
+
+# Calcilo de KPIs
+ingreso_total = df_ventas['monto_total'].sum()
+print()
