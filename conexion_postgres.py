@@ -77,6 +77,28 @@ print(df_productos.head)
 sns.set_theme(style="whitegrid")
 plt.rcParams['figure.figsize'] = (10, 6)
 
-# Calcilo de KPIs
+# Calculo de KPIs Ingreso total
 ingreso_total = df_ventas['monto_total'].sum()
-print()
+print(f"Ingreso Total: ${ingreso_total:,.2f}")
+
+# KPIs Ticket promedio
+ticket_promedio = df_ventas['monto_total'].mean()
+print(f"Ticket Promedio: ${ticket_promedio:,.2f}")
+
+# KPIs Tasa de conversion de usuarios
+usuarios_totales = df_usuario['usuario_id'].nunique() 
+usuarios_con_compra = df_ventas['usuario_id'].nunique() #
+tasa_conversion = (usuarios_con_compra / usuarios_totales) * 100
+print(f"Tasa de Conversión: {tasa_conversion:.1f}%")
+print(f"({usuarios_con_compra} de {usuarios_totales} usuarios realizaron una compra)")
+
+# Producto mas vendido
+producto_mas_vendida =  (df_ventas.groupby('producto_id')['cantidad'].sum().reset_index().merge(df_productos[['producto_id', 'producto_nombre']], on = 'producto_id').sort_values('cantidad', ascending = False))
+
+# Agregamos una verificaicon antes del .iloc[0] para evitar errores si el DataFrame esta vacio
+if producto_mas_vendida.empty:
+    print("No se encontraron ventas para determinar el producto más vendido.")  
+else:
+    producto_top = producto_mas_vendida.iloc[0]
+    print(f"Producto más vendido: {producto_top['producto_nombre']} con {producto_top['cantidad']} unidades vendidas")                          
+
