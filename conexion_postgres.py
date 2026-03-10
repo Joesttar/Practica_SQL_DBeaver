@@ -100,5 +100,21 @@ if producto_mas_vendida.empty:
     print("No se encontraron ventas para determinar el producto más vendido.")  
 else:
     producto_top = producto_mas_vendida.iloc[0]
-    print(f"Producto más vendido: {producto_top['producto_nombre']} con {producto_top['cantidad']} unidades vendidas")                          
+    print(f"Producto más vendido: {producto_top['producto_nombre']} con {producto_top['cantidad']} unidades vendidas")                  
 
+# agregamos una verificacion para evitar errores si el DataFrame esta vacio
+if df_ventas.empty:
+    print("No se encontraron ventas para visualizar el ingreso por categoría.")
+# Visualizacion de Ingreso Total por Categoria
+    else:
+    ingreso_categoria = (df_ventas.merge(df_productos[['producto_id', 'categoria']], on='producto_id').groupby('categoria')['monto_total'].sum().reset_index()).sum().sort_values(ascending=False).reset_index()
+    ifg, ax = plt.subplots()
+    sns.barplot(data=ingreso_categoria, x='categoria', y='monto_total', palette='Blues_d', ax=ax)
+    ax.set_title('Ingreso total por Categoria', fontsize=14, fontweight='bold')
+    ax.sert_xlabel('Categoria', fontsize=12)
+    ax.set_ylabel('Ingreso Total ($)', fontsize=12)
+    for bar in ax.patches:
+        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), f'${bar.get_height():,.0f}', ha='center', va='bottom', fontsize=10)
+    plt.tight_layout()
+    plt.show()
+    
