@@ -105,16 +105,46 @@ else:
 # agregamos una verificacion para evitar errores si el DataFrame esta vacio
 if df_ventas.empty:
     print("No se encontraron ventas para visualizar el ingreso por categoría.")
-# Visualizacion de Ingreso Total por Categoria
-    else:
-    ingreso_categoria = (df_ventas.merge(df_productos[['producto_id', 'categoria']], on='producto_id').groupby('categoria')['monto_total'].sum().reset_index()).sum().sort_values(ascending=False).reset_index()
+else:
+    ingreso_categoria = (   
+        df_ventas
+        .merge(df_productos[['producto_id', 'categoria']], on='producto_id')
+        .groupby('categoria')['monto_total']
+        .sum()  
+        .sort_values(ascending=False)
+        .reset_index()# Visualizacion de Ingreso Total por Categoria
+    )
+# Visualizacion de Ingreso Total por Categoria como grafica de barras 
     ifg, ax = plt.subplots()
     sns.barplot(data=ingreso_categoria, x='categoria', y='monto_total', palette='Blues_d', ax=ax)
     ax.set_title('Ingreso total por Categoria', fontsize=14, fontweight='bold')
-    ax.sert_xlabel('Categoria', fontsize=12)
+    ax.set_xlabel('Categoria', fontsize=12)
     ax.set_ylabel('Ingreso Total ($)', fontsize=12)
-    for bar in ax.patches:
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), f'${bar.get_height():,.0f}', ha='center', va='bottom', fontsize=10)
+
+# Agregar etiquetas de valor encima de cada barra
+for bar in ax.patches:
+    ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), f'${bar.get_height():,.0f}', ha='center', va='bottom', fontsize=10)
     plt.tight_layout()
     plt.show()
+    plt.close()
     
+ # Distribucion por rol
+    if df_usuario.empty:
+        print("No se encontraron usuarios para visualizar la distribución por rol.")
+    else: 
+        roles_count = df_usuario['rol'].value_counts().reset_index()
+        roles_count.columns = ['rol', 'count']
+
+        fig, ax = plt.subplots(figsize=(7,7))
+        ax.pie(
+        roles_count['count'],
+        labels=roles_count['rol'].str.capitalize(),
+        autopct='%1.1f%%',
+        colors=sns.color_palette('pastel'),
+        startangle=90,
+        wedgeprops={'edgecolor': 'white', 'linewidth': 1.5})
+
+ax.set_title('Distribucion de Usuario por rol', fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.show()
+plt.close()
