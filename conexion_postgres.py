@@ -70,6 +70,9 @@ print("Limpieza de datos completada exitosamente.")
 print("\nCategorias unicas detectadas:", df_productos['categoria'].unique())
 print(df_productos.head)
 
+print(f"Total de productos: {len(df_productos)}")
+print(f"Total de ventas procesadas: {len(df_ventas)}")
+
 #------------------------------------------------------------------------------------------------------------------------------------------
 # Analisis y visualizacion de datos
 
