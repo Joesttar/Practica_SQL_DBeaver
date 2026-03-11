@@ -73,6 +73,7 @@ print(df_productos.head)
 print(f"Total de productos: {len(df_productos)}")
 print(f"Total de ventas procesadas: {len(df_ventas)}")
 
+
 #------------------------------------------------------------------------------------------------------------------------------------------
 # Analisis y visualizacion de datos
 
